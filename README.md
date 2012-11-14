@@ -59,6 +59,8 @@ Or enabled them only in a time range, or to a limited group of hosts.
 Also they can talk to each other, with it's integrated Chat.
 ![chat](http://img59.imageshack.us/img59/5710/chatsgk.png)
 
+BlackHole must run as the user shell, so the only thing that he can use is BlackHole.
+I recommend to disable scp and sftp in the BlackHole server.
 
 Installation
 ==============
