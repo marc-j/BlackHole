@@ -54,7 +54,7 @@ Also download those session logs
 ![logs](http://img534.imageshack.us/img534/6042/logsx.png)
 
 You can have full control of you users, by enable them or disable them.
-Or enabled them only in a time range, or to a limited group os hosts.
+Or enabled them only in a time range, or to a limited group of hosts.
 
 Also they can talk to each other, with it's integrated Chat.
 ![chat](http://img59.imageshack.us/img59/5710/chatsgk.png)
