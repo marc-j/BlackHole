@@ -66,6 +66,7 @@ Installation
 ==============
 
 To get a full overview, and a tutorial on how to install it [go to](http://aenima-x.github.com/BlackHole/)
+Or download the manual, it has a detailed explanation on how to install it.
 
 Extras
 ======
