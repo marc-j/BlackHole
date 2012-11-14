@@ -63,5 +63,5 @@ Also they can talk to each other, with it's integrated Chat.
 Installation
 ==============
 
-To get a full overview, and a tutorial on how to intall it [go to](http://aenima-x.github.com/BlackHole/)  
+To get a full overview, and a tutorial on how to install it [go to](http://aenima-x.github.com/BlackHole/)  
 
