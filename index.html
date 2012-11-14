@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Blackhole : Integrated ssh loging and security tool" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Blackhole</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/aenima-x/BlackHole">View on GitHub</a>
+
+          <h1 id="project_title">Blackhole</h1>
+          <h2 id="project_tagline">Integrated ssh loging and security tool</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/aenima-x/BlackHole/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/aenima-x/BlackHole/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>Overview</h2>
+
+<p>Blackhole was designed to solve a problem we had where I work.
+Our problem was that we had a very large server platform, and a large number of users needing to connect to them. Mostly to give support.
+Furthermore users are constantly modified, thus had two choices.
+Create all users on all servers (were too many) or we created a generic user for all of them.
+The first option was impractical, especially for the high rotation of users.
+And the second was clearly unsafe, because there was no way to keep trace to each user or where it was connected to.</p>
+
+<p>We needed something that was easy to manage and give us visibility of what users did.</p>
+
+<p>How it works?
+Blackhole primarily a frontend, all users connection should be via this server.
+And the application is configured as user shell, to be the only thing they can run.
+The database contains the information of all servers, grouped by environments.
+Then there are the private keys to be used for each connection depending on the user.
+Then each user has a profile associated with the servers that each user is allowed to connect.</p>
+
+<p>The application is a curses-menu with the list of enabled servers.
+Which contains all servers to which we have permission to connect.</p>
+
+<p>But much more than that because blackhole stores information for each connection established.</p>
+
+<ul>
+<li>What user</li>
+<li>The user used to connect</li>
+<li>Time of login</li>
+<li>Time logout</li>
+<li>Connection duration</li>
+<li>The use (the number of commands that run / connect time)</li>
+<li>The amount of keypresses</li>
+</ul><p>But also keeps a log of all the contents of each connection.</p>
+
+<p>All this information can be viewed from the web that is integrated, which allows us to generate graphics and download the log for each connection.</p>
+
+<p>Functionality Extras:
+Apart from the above, Blackhole has other functionalities.</p>
+
+<ul>
+<li>Chat server, where users can talk online.</li>
+<li>Validation by token, can optionally enable token validation (which is sent by mail), and until it is entered correctly the user can not access.</li>
+<li>Enabling user by time range, or a small group of servers.</li>
+</ul><p><img src="http://img717.imageshack.us/img717/371/diagramv.jpg" alt="Diagram"></p>
+
+<h2>Installation:</h2>
+
+<p>The installation process is a bit complex, since it has several dependencies.
+The application is written in python and is based on the Django framework.
+It runs on Linux (tested), OSX (tested) or any other UNIX compliant units.
+This manual is a fresh install.
+The installation was done on a Linux (Ubuntu 12.04) with LAMP (Apache-MySQL-PHP), Django 1.4 (was developed and tested with this version, although it might work with less. But I do not know), python 2.7 (with 2.6 should work fine).</p>
+
+<p>First of all, install all dependencies.</p>
+
+<ul>
+<li>Django (<a href="https://www.djangoproject.com/">https://www.djangoproject.com/</a>)</li>
+<li>paramiko</li>
+<li>MySQLdb</li>
+<li>Urwid</li>
+<li>python-simplejson</li>
+<li>django-qsstats-magic</li>
+<li>python-dateutil</li>
+<li>django_extensions</li>
+<li>libapache2-mod-wsgi (Only if you want to use apache)</li>
+</ul><p>Most can be installed via apt.
+I recommend install Django  using the tarball in their website.</p>
+
+<p>apt-get install python-mysqldb python-paramiko python-urwid python-simplejson libapache2-mod-wsgi</p>
+
+<p>There are three that we use pip (Python Package Index):
+pip install django-qsstats-magic  python-dateutil django_extensions smpplib</p>
+
+<p>With this done, we need to create the database and a user. (For this there are no instructions, I recommend installing phpmyadmin and do it from there).
+This manual will use a database called blackhole, with a username and password blackhole / blackhole.
+I recommend using a more secure password in production.</p>
+
+<p>The next step is to install the application.
+As the application runs as Shell users, we will install in the / home. But it may be where you want:</p>
+
+<pre><code>$ cd /home
+$ tar zxvf BlackHole.tgz
+</code></pre>
+
+<p>We must create a group (eg blackhole), which must be the primary group of all users who use the application.</p>
+
+<pre><code>$ groupadd blackhole
+</code></pre>
+
+<p>Now it is very important to change the permissions.</p>
+
+<pre><code>$ cd /home/blackHole
+$ chown –R root:blackhole ./
+</code></pre>
+
+<h2>Configuration of folders:</h2>
+
+<p>The next step is the configuration, the first thing to do is modify the configuration file named blackhole.config located in /home/BlackHole/</p>
+
+<p>This is the content
+[settings]
+debug = False
+application_path = /home/BlackHole
+log_path = /home/BlackHole/logs
+chat_enabled = True
+token_validation_enabled = False</p>
+
+<p>APPLICATION_PATH value must be equal to where the application installed.
+And log_path entry is the directory where we want to keep logs of the sessions.
+It is very important to make sure that directory is writable for the group blackhole.</p>
+
+<p><strong>NOTE: the logs will be stored in this directory, but will first try to be written in a directory with the name of the user profile within this directory. If that directory does not exist, will be stored in the directory indicated by log_path.</strong>
+<strong>These directory must be created by hand, and must also have write permissions for the group blackhole.</strong></p>
+
+<p>Here is also set if we want to enable chat option, and the option of token.
+Enabling token found here is global, then you can enable each user.</p>
+
+<h2>Database Configuration:</h2>
+
+<p>Once you have created the database and the user.
+We have to enter it in the file: /home/BlackHole/black_hole/settings.py
+In "DATABASES", we enter:</p>
+
+<ul>
+<li>"NAME": the name of the database created</li>
+<li>"USER": the name of the user created</li>
+<li>"PASSWORD" user password set</li>
+</ul><p><strong>NOTE: In addition to this we can change the TimeZone file.</strong>
+<strong>Example: TIME_ZONE = 'America / Chicago'</strong>
+<strong>And the language. Example: LANGUAGE_CODE = 'en-us'</strong>
+<strong>Currently the only enabled languages are English (en-us) and Spanish from Argentina (es-AR).</strong></p>
+
+<p>Once it is ready, we need to create the tables.
+For this we have to run the following command:</p>
+
+<pre><code>cd /home/BlackHole
+. /manage.py syncdb
+</code></pre>
+
+<p>and then to load some necessary settings:</p>
+
+<pre><code>. /manage.py initial_setup
+</code></pre>
+
+<h2>Web Server Configuration:</h2>
+
+<p>To run the website integrated with blackhole have 2 options.
+Run it with apache, or run it through the webserver built with django (Which is not recommended).</p>
+
+<p>To facilitate integration with apache, delivered two necessary configuration files.
+They are in "/home/BlackHole/apache"
+In django.wsgi only must modify the installation directory is different from the manual.</p>
+
+<p>Copy the file site.example  to the directory sites-available, and you must enable it (if you modify the installation directory, must also be modified in this file):</p>
+
+<pre><code>cp site.example /etc/apache2/sites-available/blackhole
+a2ensite blackhole
+</code></pre>
+
+<p>In the configuration file example uses port 8080, so we have to enable the port in apache adding this to /etc/apache2/ports.conf</p>
+
+<pre><code>NameVirtualHost *: 8080
+Listen 8080
+</code></pre>
+
+<p>We can restart the apache.</p>
+
+<p>We enter it through this url:
+http://localhost:8000/blackhole/index/
+With the username and password you created earlier to create the database.
+<img src="http://img32.imageshack.us/img32/957/indexgm.png" alt="web"></p>
+
+<h2>Application Configuration:</h2>
+
+<p>Now should load all the information about the user, servers, etc. keys.</p>
+
+<p>By clicking on the "Admin", take us to this page:</p>
+
+<p><img src="http://img109.imageshack.us/img109/884/admintiff.png" alt="Admin"></p>
+
+<p>We must make a distinction between "Auth-&gt; Users" and "Black_Hole_Db-&gt; Users".
+In the first option the user must be created that will manage the application only.
+The second are the users who will be using it.
+Likewise you can create groups for administrative users who can do specific tasks.
+Such as enabling and disabling users, but only that.</p>
+
+<h2>Administrative Users:</h2>
+
+<p>In Auth-&gt; Users, we create these administrative users. Remember that for these users can access this site must be on the "Staff".
+If you do not want to use groups, and just need that the users can so anything. Instead of giving specific permissions, they can enable as "Superuser".</p>
+
+<h2>Environment:</h2>
+
+<p>The environments are a logical grouping of servers. </p>
+
+<p><img src="http://img607.imageshack.us/img607/8046/enviroment.png" alt="Environment"></p>
+
+<p><strong>NOTE: Do not use spaces in the Name field, since it is used for directories of logs and can cause problems.</strong></p>
+
+<h2>Host:</h2>
+
+<p>It is the configuration of each of the computers that we can connect.</p>
+
+<p><img src="http://img802.imageshack.us/img802/5994/hosti.png" alt="Host"></p>
+
+<h2>User Identity:</h2>
+
+<p>The user identity is a fundamental concept that must be understood well.
+The user identity is the user who will be using to connect to the selected device.
+By default identity is created called "self".
+Identities to be created are generic users.
+For example if you have users connecting users with their own personal, they will use the identity "self".
+Example, if we have a user named John and he must connected to server A as  the user John, for that he will have to connect as "self".
+But if that same user on server B is connected as the admin user for that server will have to connect with the identity "admin". 
+And that must be created here, but not the identity John.</p>
+
+<h2>Session Identity:</h2>
+
+<p>The session identity is another important concept is going to associate a user identity to a server.
+Then the profiles are going to have one or more "Identities Session" associated.</p>
+
+<p><img src="http://img818.imageshack.us/img818/2807/sessionidentity.png" alt="Session Identity"></p>
+
+<h2>Profile:</h2>
+
+<p>Here we create different user profiles.
+The profiles are a group of Session Identities, you cant have 2 Session Identities to the same host in one profile (See Known Bugs).</p>
+
+<p><img src="http://img560.imageshack.us/img560/5421/profileic.png" alt="Profile"></p>
+
+<h2>Private Key:</h2>
+
+<p>Private keys are the means used to connect to servers.
+The private keys are by environment, so for our servers in the same environment we have loaded the same public keys for a user to be connected to one or more servers that environment.
+One important thing is that you take should be created this way.
+Example if I have two Session Identities :</p>
+
+<ul>
+<li>John -&gt; server1 (PRODUCTION) -&gt; as self</li>
+<li>John -&gt; server2 (PRODUCTION) -&gt; as admin
+So I have 2 keys created
+One for the user admin and one for the user john (both for the PRODUCTION environment).</li>
+</ul><p>It is very important to select the correct type of key (DSA or RSA). 
+<img src="http://img440.imageshack.us/img440/6919/keyc.png" alt="Private Key"></p>
+
+<h2>User:</h2>
+
+<p>The user has several fields that are optional, and are only useful if you use some extra functionality of BlackHole, as is the token validation. 
+<img src="http://img231.imageshack.us/img231/8118/userd.png" alt="User"></p>
+
+<p>The email field is not mandatory, but if you want to use email token must be complete.
+The identifier field is some type of identifier of the user. But it is not mandatory.
+When a user is disabled, you can not connect to any server.
+But there is another option, which is to enable it in a time range, and if outside this range can not enter any server.
+For this option to work, the user has to be enabled.
+Since that option is evaluated before this.
+Also can be restricted to environments that can log in, in this way even though the user has permissions to access other servers, it will not be able to connect.
+Mobile field is to post token via SMS. Not required.
+And finally the Log Session option is to disable any user on time to avoid saving your sessions files (but will be stored in the database for statistics).</p>
+
+<h2>Use it</h2>
+
+<p>When everything is ready, users will connect by ssh to blackhole and this would provide them the options they have available.
+<img src="http://img577.imageshack.us/img577/2091/mainwindowa.png" alt="main window"></p>
+
+<p>If you have any problems with any keys when connected, will be indicated to the user.
+<img src="http://img834.imageshack.us/img834/5834/invalidkey.png" alt="Key error"></p>
+
+<h2>Chat:</h2>
+
+<p>If the option is enabled users can chat with to each other with the option in the menu (the user can log in once, if you already have another open chat connection, you will not be able to connect again). 
+<img src="http://img59.imageshack.us/img59/5710/chatsgk.png" alt="Chat"></p>
+
+<p>The Chatserver process must be running to use this functionality.</p>
+
+<pre><code>$ cd /home/BlackHole
+$ nohup ./startChatServer.py &amp;
+</code></pre>
+
+<h2>Web:</h2>
+
+<p>In statistics we find many statistics, which can be requested by user or server.
+<img src="http://img29.imageshack.us/img29/2551/statska.png" alt="Stats"></p>
+
+<p><img src="http://img33.imageshack.us/img33/9905/sourceg.png" alt="Stats2"></p>
+
+<p><img src="http://img849.imageshack.us/img849/4737/logincount.png" alt="Stats3"></p>
+
+<p>For each one we can select a time range and a statistic type.
+In option logs we can find the option to search for a particular user sesions in a time range and then you can download the log of each session
+<img src="http://img534.imageshack.us/img534/6042/logsx.png" alt="Logs"></p>
+
+<h2>Extras:</h2>
+
+<p>As I wrote before, there are some extra features that are not enabled.</p>
+
+<ul>
+<li>  Validation of the web by radius (see notes in settings.py)</li>
+<li>  Toek sent by mail, in addition to enable it in the configuration file you must modify the credentials in  /home/BlackHole/black_hole_gui/emailSender.py </li>
+<li>  Token can also be send by SMS, but you need to have access to a SMSC. If you want that you need to change the configuration in  /home/BlackHole/black_hole_gui/smsSender.py</li>
+</ul><p>You can send me an email if you have questions about these.</p>
+
+<h2>Known Bugs:</h2>
+
+<p>There are still several things to fix, the main ones are:</p>
+
+<ul>
+<li>You can not put in a profile 2 Identities session of the same host. Blackhole but will have a problem in generating the menu and this will behave strangely. If you need a user can connect to the same server as 2 different users what we must do is create that host two times with different names and create 2 session identities.</li>
+<li>The size of the terminal when you connect from blackhole to a server is the same of you blackhole terminal. If we change the size before you connect to a server would fit well, but if we change the window size after you connected to the server the terminal continue to have its original size.</li>
+<li>If the server that runs Blackhole is not very powerful, can be that when we have many users connected and run any command that writes a lot on screen (Example "run a select * from table"), it may be that others feel that this slow. This is because  is consuming many resources to write on the screen and in the log of the session. Therefore it is recommended not to run it in virtual machine if you expect to have many users.</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Blackhole maintained by <a href="https://github.com/aenima-x">aenima-x</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
