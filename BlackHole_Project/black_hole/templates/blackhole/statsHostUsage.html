@@ -1,0 +1,64 @@
+{% extends "blackhole/index.html" %}
+{% load i18n %}
+{% block title %}{% trans "Statistics" %}{% endblock %}
+
+{% block extrahead %}
+<script src="{{ STATIC_URL }}js/jquery.flot.js"></script>
+<script src="{{ STATIC_URL }}js/jquery.flot.selection.js"></script>
+{% endblock %}
+{% block jquery %}
+{% if data %}
+    var data = [{ label: "Usage" ,data:{{ data }} }];
+    var options = {
+        series: {
+            lines: { show: true, fill: true },
+            points: { show: true }
+        },
+        legend: { noColumns: 2 },
+        xaxis: { mode: "time" },
+        yaxis: { min: 0 },
+        selection: { mode: "x" }
+    };
+
+    var placeholder = $("#placeholder");
+
+    placeholder.bind("plotselected", function (event, ranges) {
+        var zoom = $("#zoom").attr("checked");
+        if (zoom)
+            plot = $.plot(placeholder, data,
+                          $.extend(true, {}, options, {
+                              xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
+                          }));
+    });
+
+    placeholder.bind("plotunselected", function (event) {
+        $("#selection").text("");
+    });
+    
+    var plot = $.plot(placeholder, data, options);
+
+    $("#clearSelection").click(function () {
+        plot.clearSelection();
+    });
+
+{% endif %}
+{% endblock %}
+{% block content %}
+{% if data %}
+    <label>{% trans "User" %}: {{ info.user }}</label>
+    <label>{% trans "From" %}: {{ info.from }}</label>
+    <label>{% trans "To" %}: {{ info.to }}</label>
+    <input id="clearSelection" type="button" class="btn" value="Clear selection" />
+    <label><input id="zoom" type="checkbox" />Zoom to selection.</label>
+    <div style="float:left">
+	<div id="placeholder" style="width:600px;height:300px"></div>
+    </div>
+<a class="btn" href="{% url byHost %}">{% trans 'Back' %}</a>
+{% else %}
+<div class="alert alert-info">
+  {% trans 'No data' %}
+</div>
+{% endif %}
+
+    
+{% endblock %}

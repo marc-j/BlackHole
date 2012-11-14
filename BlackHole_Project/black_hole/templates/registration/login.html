@@ -1,0 +1,33 @@
+{% extends "blackhole/base.html" %}
+{% load url from future %}
+{% load i18n %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="form-horizontal">
+	{% csrf_token %}
+	<legend>Login</legend>
+	{% for field in form %}
+	<div class="row">
+		<div class="span6">
+			{{ field.label_tag }} {{ field }}
+		 	{% if field.errors %} 
+		 	<span class="label label-important">{{ field.errors|striptags }}</span> 
+			{% endif %}
+		</div>
+	</div>
+	{% endfor %}
+	<br />
+	<div class="row">
+	<div class="span6">
+		<button class="btn" type="submit" id="sendButton">
+			<i class="icon-play-circle icon-black"></i> {% trans "Send" %}
+		</button>
+		<input type="hidden" name="next" value="{{ next }}" />
+	</div>
+	</div>
+</form>
+{% if form.non_field_errors %}
+<div class="alert alert-error">{{ form.non_field_errors|striptags }}</div>
+{% endif %} 
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "blackhole/index.html" %}
+{% load i18n %}
+{% block title %}{% trans "Stats By Host" %}{% endblock %}
+
+{% block jquery %}
+$("input.datePicker").datepicker({dateFormat: 'dd/mm/yy'});
+{% endblock %}
+{% block content %}
+<form action="{% url byHost %}" method="post">
+{% csrf_token %}
+{{ form }}
+</br>
+<input class="btn" type="submit" value="{% trans 'Send' %}" />
+</form>
+{% endblock %}

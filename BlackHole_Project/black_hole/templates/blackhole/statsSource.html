@@ -1,0 +1,53 @@
+{% extends "blackhole/index.html" %}
+{% load i18n %}
+{% block title %}{% trans "Statistics" %}{% endblock %}
+
+{% block extrahead %}
+<script src="{{ STATIC_URL }}js/jquery.flot.js"></script>
+<script src="{{ STATIC_URL }}js/jquery.flot.pie.js"></script>
+{% endblock %}
+{% block content %}
+{% if data %}
+    <label>{% trans "User" %}: {{ info.user }}</label>
+    <label>{% trans "From" %}: {{ info.from }}</label>
+    <label>{% trans "To" %}: {{ info.to }}</label>
+<div id="graph" style="width: 550px; height: 255px;">
+    <script type='text/javascript'>
+        $.plot($("#graph"),[
+        {% for line in data %}
+        	{
+			label: "{{ line.sourceIP }}",
+			data: {{ line.total }}
+			},
+		{% endfor %}
+   ],
+   {
+     series: {
+            pie: { 
+                show: true,
+                radius: 1,
+                tilt: 0.5,
+                label: {
+                    show: true,
+                    radius: 2/3,
+                    formatter: function(label, series){
+                        return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+                    },
+                    threshold: 0.1
+                }
+            }
+        },
+        legend: {
+            show: true
+        }
+  });
+    </script>
+<a class="btn" href="{% url byHost %}">{% trans 'Back' %}</a>
+{% else %}
+<div class="alert alert-info">
+  {% trans 'No data' %}
+</div>
+{% endif %}
+
+    
+{% endblock %}

@@ -1,0 +1,172 @@
+# BlackHole ssh Monitoring System
+# Copyright (C) 2012 Nicolas Rebagliati
+# This file is distributed under the same license as the BlackHole package.
+# Nicolas Rebagliati <nicolas.rebagliati@aenima-x.com.ar>, 2012.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: BlackHole 4.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-24 15:38-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: blackHoleExceptions.py:13
+#, python-format
+msgid "File %s is Missing"
+msgstr "El archivo %s no existe"
+
+#: blackHoleExceptions.py:18
+#, python-format
+msgid "Error Loading Settings: %s"
+msgstr "Error cargando configuracion: %s"
+
+#: blackHoleExceptions.py:23
+#, python-format
+msgid "Unknown User [%s]"
+msgstr "Usuario desconocido [%s]"
+
+#: blackHoleExceptions.py:28
+#, python-format
+msgid "The user %s is not enabled."
+msgstr "El usuario %s no esta habilitado."
+
+#: blackHoleExceptions.py:33
+#, python-format
+msgid "DataBase Error: %s "
+msgstr "Error en Base de Datos: %s"
+
+#: blackHoleExceptions.py:38
+#, python-format
+msgid "The user %(username)s is only enabled from %(from)s to %(to)s"
+msgstr "El usuario %(username)s solo esta habilitado de %(from)s a %(to)s"
+
+#: chatGUI.py:147
+#, python-format
+msgid "%s login\n"
+msgstr "%s se conecto\n"
+
+#: chatGUI.py:212
+msgid "BlackHole Chat:"
+msgstr "BlackHole Chat:"
+
+#: chatGUI.py:226
+msgid "Send Message:  Press [ESC] to quit."
+msgstr "Enviar Mensaje: Presione [ESC] pra salir."
+
+#: chatGUI.py:307
+msgid "You are already connected on other session."
+msgstr "Usted ya se encuentra conectado en otra sesion."
+
+#: chatGUI.py:311
+msgid "Cant connect to Chat server."
+msgstr "No se puede realizar conexion al servidor de chat."
+
+#: chatServer.py:39
+msgid "Disconnect"
+msgstr "Desconectado"
+
+#: cursesGui.py:151
+#, python-format
+msgid "%(description)s Hosts: %(hostsCount)s"
+msgstr "%(description)s Hosts: %(hostsCount)s"
+
+#: cursesGui.py:246
+msgid "Move:"
+msgstr "Moverse:"
+
+#: cursesGui.py:247
+msgid "up"
+msgstr "arriba"
+
+#: cursesGui.py:247
+msgid "down"
+msgstr "abajo"
+
+#: cursesGui.py:248
+msgid "home"
+msgstr "inicio"
+
+#: cursesGui.py:249
+msgid "end"
+msgstr "fin"
+
+#: cursesGui.py:250
+msgid "left"
+msgstr "izq"
+
+#: cursesGui.py:251
+msgid "w/Mouse"
+msgstr "c/Mouse"
+
+#: cursesGui.py:252
+msgid "Expand:"
+msgstr "Expandir:"
+
+#: cursesGui.py:254
+msgid "Select:"
+msgstr "Seleccionar:"
+
+#: cursesGui.py:256
+msgid "DoubleClick"
+msgstr "DobleClick"
+
+#: cursesGui.py:257
+msgid "Quit:"
+msgstr "Salir:"
+
+#: cursesGui.py:260
+msgid "Disabled"
+msgstr "Deshabilitado"
+
+#: cursesGui.py:302
+msgid "User:"
+msgstr "Usuario:"
+
+#: cursesGui.py:304
+msgid "- Selected:"
+msgstr "- Seleccionado:"
+
+#: cursesGui.py:333
+msgid "Chat not Enabled"
+msgstr "Chat deshabilitado"
+
+#: cursesGui.py:360
+msgid "Login is not allowed"
+msgstr "El login no esta permitido"
+
+#: cursesGui.py:373
+msgid "Private Key Missing or Invalid Format"
+msgstr "Falta la Llave Privada o el formato no es valido"
+
+#: cursesGui.py:380
+msgid "Login to this host is not allowed"
+msgstr "El login no esta habilitado en este momento"
+
+#: cursesGui.py:389
+#, python-format
+msgid "Login to %(host)s [%(user)s] Date: %(date)s ........\n"
+msgstr "Conatado a %(host)s [%(user)s] Fecha: %(date)s ........\n"
+
+#: cursesGui.py:466
+msgid "The Profile has no hosts."
+msgstr "El perfil no tiene hosts."
+
+#: tokenValidationWindow.py:26
+#, python-format
+msgid "Enter the Token for the sessionID: %s"
+msgstr "Ingrese Token para la session ID: %s"
+
+#: tokenValidationWindow.py:50
+#, python-format
+msgid "Token Invalid [%s]!!"
+msgstr "Token Invalido [%s]!!"
+
+#: tokenValidationWindow.py:53
+msgid "You must enter the Token!!"
+msgstr "Debe ingresar el Token!!"

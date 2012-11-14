@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="us">
+<html>
+<head>
+<meta charset="utf-8">
+<title>{% block title %}Untitled{% endblock %}</title>
+<link href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.9.0.custom.min.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+<script src="{{ STATIC_URL }}js/jquery-1.8.2.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery-ui-1.9.0.custom.min.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+{% block extrahead %} {% endblock %}
+<script type="text/javascript">
+$(function(){
+{% block jquery %} 
+{% endblock %}
+});
+</script>
+</head>
+<body>
+{% block navbar %}
+{% endblock %}
+<div class="container">
+{% block content %} {% endblock %}
+</div>
+<!-- <div class="navbar navbar-fixed-bottom"> -->
+<!-- <div class="navbar-inner"> -->
+<!-- <div class="conatiner"> -->
+
+<!--   <p class="navbar-text pull-right">Nicolas Rebagliati - Aenima-x 2012</p> -->
+<!--   </div> -->
+
+<!--   </div> -->
+<!-- </div> -->
+</body>
+</html>

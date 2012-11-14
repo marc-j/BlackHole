@@ -1,0 +1,52 @@
+{% extends "blackhole/index.html" %}
+{% load i18n %}
+{% block title %}{% trans "Find Session Log" %}{% endblock %}
+
+{% block jquery %}
+$("input.datePicker").datepicker({dateFormat: 'dd/mm/yy'});
+{% endblock %}
+{% block content %}
+{% if form %}
+<form action="{% url findSessionLog %}" method="post">
+{% csrf_token %}
+{{ form }}
+</br>
+<input class="btn" type="submit" value="{% trans 'Send' %}" />
+</form>
+{% else %}
+{% if logs %}
+<table id="hosts"  class="table table-striped table-condensed">
+  <tr>
+   	<th>{% trans "SessionID" %}</th>
+   	<th>{% trans "User" %}</th>
+    <th>{% trans "Host" %}</th>
+    <th>{% trans "Login as" %}</th>
+    <th>{% trans "Source IP" %}</th>
+    <th>{% trans "Login Date" %}</th>
+    <th>{% trans "Logout Date" %}</th>
+    <th>{% trans "Blackhole Server" %}</th>
+    <th>{% trans "Download" %}</th>
+  </tr>
+{% for log in logs %}
+<tr>
+	<td>{{ log.sessionID }}</td>
+	<td>{{ log.user.userName }}</td>
+	<td>{{ log.host.name }}</td>
+	<td>{{ log.userIdentity }}</td>
+	<td>{{ log.sourceIP }}</td>
+	<td>{{ log.loginDate }}</td>
+	<td>{{ log.logoutDate }}</td>
+	<td>{{ log.blackholeServer }}</td>
+	{% if log.canDownload %}
+	<td><a href="{% url getLog  log.id %}"><button class="btn btn-mini btn-primary" type="button">{% trans "Download" %}</button></a></td>
+	{% else %}
+	<td><button class="btn btn-mini btn-primary disabled" type="button">{% trans "Download" %}</button></td>
+	{% endif %}
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<span class="label label-important">{% trans "There are no logs for that time range" %}</span>
+{% endif %}
+{% endif %}
+{% endblock %}
