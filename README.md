@@ -70,8 +70,8 @@ Extras
 
 BlackHole also haves some extra functionalities, that are disabled by default.
 You can send a token, to ensure that the user is who he is saying he is.
-* You cant send it by mail
-* You cand send it by SMS, but you need a SMSC (this is beacause I work on a Movile Phone Company and i have one)
+* You can send it by mail
+* You can send it by SMS, but you need a SMSC (this is beacause I work on a Movile Phone Company and i have one)
 
 You can authenticate web users with radius, for this you need to install python-pyrad, if you use this feature I recommend you to also authenticate ssh users with radius.
 
