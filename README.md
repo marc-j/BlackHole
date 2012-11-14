@@ -17,14 +17,14 @@ Is divided into two functionalities:
 Requirements
 ============
 
-* `Django <https://www.djangoproject.com/>`
-* `Paramiko <http://www.lag.net/paramiko/>`
-* `MySQLdb <http://sourceforge.net/projects/mysql-python/>`	
-* `Urwid <http://excess.org/urwid/>`
-* `python-simplejson <https://github.com/simplejson/simplejson>`
-* `django-qsstats-magic <https://bitbucket.org/kmike/django-qsstats-magic>`
-* `python-dateutil <http://labix.org/python-dateutil>`
-* `django_extensions <https://github.com/django-extensions/django-extensions>`
+* [Django](https://www.djangoproject.com/)
+* [Paramiko](http://www.lag.net/paramiko/)
+* [MySQLdb](http://www.lag.net/paramiko/)
+* [Urwid](http://excess.org/urwid/)
+* [python-simplejson](https://github.com/simplejson/simplejson)
+* [django-qsstats-magic](https://bitbucket.org/kmike/django-qsstats-magic)
+* [python-dateutil](http://labix.org/python-dateutil)
+* [django_extensions](https://github.com/django-extensions/django-extensions)
 * libapache2-mod-wsgi (Only if you want to use apache)
 
 License
