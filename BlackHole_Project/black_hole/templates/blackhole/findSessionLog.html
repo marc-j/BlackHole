@@ -7,7 +7,7 @@ $("input.datePicker").datepicker({dateFormat: 'dd/mm/yy'});
 {% endblock %}
 {% block content %}
 {% if form %}
-<form action="{% url findSessionLog %}" method="post">
+<form action="{% url 'findSessionLog' %}" method="post">
 {% csrf_token %}
 {{ form }}
 </br>
@@ -38,7 +38,7 @@ $("input.datePicker").datepicker({dateFormat: 'dd/mm/yy'});
 	<td>{{ log.logoutDate }}</td>
 	<td>{{ log.blackholeServer }}</td>
 	{% if log.canDownload %}
-	<td><a href="{% url getLog  log.id %}"><button class="btn btn-mini btn-primary" type="button">{% trans "Download" %}</button></a></td>
+	<td><a href="{% url 'getLog'  log.id %}"><button class="btn btn-mini btn-primary" type="button">{% trans "Download" %}</button></a></td>
 	{% else %}
 	<td><button class="btn btn-mini btn-primary disabled" type="button">{% trans "Download" %}</button></td>
 	{% endif %}

@@ -6,7 +6,7 @@
 $("input.datePicker").datepicker({dateFormat: 'dd/mm/yy'});
 {% endblock %}
 {% block content %}
-<form action="{% url byHost %}" method="post">
+<form action="{% url 'byHost' %}" method="post">
 {% csrf_token %}
 {{ form }}
 </br>
